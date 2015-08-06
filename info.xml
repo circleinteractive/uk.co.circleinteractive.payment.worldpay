@@ -24,7 +24,7 @@
    <passwordLabel></passwordLabel>
    <signatureLabel></signatureLabel>
    <subjectLabel></subjectLabel>
-   <urlSiteDefault>https://secure-test.wp3.rbsworldpay.com/wcc/purchase</urlSiteDefault>
+   <urlSiteDefault>https://secure.wp3.rbsworldpay.com/wcc/purchase</urlSiteDefault>
    <urlApiDefault></urlApiDefault>
    <urlRecurDefault></urlRecurDefault>
    <urlSiteTestDefault>https://secure-test.wp3.rbsworldpay.com/wcc/purchase</urlSiteTestDefault>
