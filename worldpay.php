@@ -85,9 +85,7 @@ class uk_co_circleinteractive_payment_worldpay extends CRM_Core_Payment {
         $postFields = $this->getWorldPayFields($params,false);
       }
       if ($postFields===false) {
-        watchdog('aw@circle', __FILE__.":".__FUNCTION__." : Failed to process parameters for WorldPay payment processor. params=".print_r($params,true));
-        error_log(__FILE__.":".__FUNCTION__." : Failed to process parameters for WorldPay payment processor. params=".print_r($params,true));
-        
+        error_log(__FILE__.":".__FUNCTION__." : Failed to process parameters for WorldPay payment processor. params=".print_r($params,true));        
         return self::error(9002,'Failed to process parameters for WorldPay payment processor. params='.print_r($params,true));
       }
  
@@ -107,7 +105,13 @@ class uk_co_circleinteractive_payment_worldpay extends CRM_Core_Payment {
       $postFields['MC_callback'] = $notifyURL;
 
       // add the civicrm specific details as WorldPay custom params
-      $postFields["MC_contact_id"]=$params["contactID"];
+
+      if (isset($params['contactID']))
+        $postFields["MC_contact_id"]=$params["contactID"];
+      elseif (isset($params['contact_id']))
+        $postFields["MC_contact_id"]=$params["contact_id"];
+      else CRM_Core_Error::fatal('Worldpay: Unable to retrieve contact id in ' . __FUNCTION__);
+
       $postFields["MC_contribution_id"]=$params["contributionID"];
       $postFields["MC_module"]=$component;
       if ( $component == 'event' ) {
@@ -153,7 +157,7 @@ class uk_co_circleinteractive_payment_worldpay extends CRM_Core_Payment {
       $uri = '';
       foreach ( $postFields as $key => $value ) {
         if ( $value === null ) {
-          error_log(__FILE__.":".__FUNCTION__." : null field value in WorldPay params for key=$key");
+          error_log(__FILE__.":".__FUNCTION__." : null field value in WorldPay params for key=$key - params: " . print_r($params, true));
           continue;
         }
         $value = urlencode( $value );
